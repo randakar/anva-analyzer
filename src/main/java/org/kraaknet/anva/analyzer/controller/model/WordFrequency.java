@@ -1,5 +1,8 @@
 package org.kraaknet.anva.analyzer.controller.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+@JsonDeserialize(as = WordFrequencyRecord.class)
 public interface WordFrequency {
 
     // Note - this deviates from the 'getter' style interface provided in the assignment.

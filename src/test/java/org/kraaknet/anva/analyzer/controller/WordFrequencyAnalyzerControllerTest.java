@@ -2,8 +2,12 @@ package org.kraaknet.anva.analyzer.controller;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.kraaknet.anva.analyzer.service.WordFrequencyAnalyzerService;
+import org.kraaknet.anva.analyzer.controller.model.FrequencyResponse;
+import org.kraaknet.anva.analyzer.controller.model.TextRequest;
 import org.kraaknet.anva.analyzer.controller.model.WordFrequency;
+import org.kraaknet.anva.analyzer.controller.model.WordFrequencyRecord;
+import org.kraaknet.anva.analyzer.controller.model.WordFrequencyRequest;
+import org.kraaknet.anva.analyzer.service.WordFrequencyAnalyzerService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,9 +38,10 @@ class WordFrequencyAnalyzerControllerTest {
      */
     @Test
     void calculateHighestFrequencyTest() {
-        when(service.calculateHighestFrequency(anyString())).thenReturn(3232);
-        final int result = controller.calculateHighestFrequency(loremIpsumText);
-        assertEquals(3232, result);
+        final var expected = FrequencyResponse.of(3232);
+        when(service.calculateHighestFrequency(anyString())).thenReturn(expected.frequency());
+        final FrequencyResponse result = controller.calculateHighestFrequency(new TextRequest(loremIpsumText));
+        assertEquals(expected, result);
     }
 
     /**
@@ -44,9 +49,16 @@ class WordFrequencyAnalyzerControllerTest {
      */
     @Test
     void calculateFrequencyForWordTest() {
-        when(service.calculateFrequencyForWord(anyString(), anyString())).thenReturn(594);
-        final int result = controller.calculateFrequencyForWord(loremIpsumText, "moo");
-        assertEquals(594, result);
+        final var expected = WordFrequencyRecord.builder()
+                .word("moo")
+                .frequency(594)
+                .build();
+        when(service.calculateFrequencyForWord(anyString(), anyString())).thenReturn(expected.frequency());
+        final WordFrequency result = controller.calculateFrequencyForWord(WordFrequencyRequest.builder()
+                .text(loremIpsumText)
+                .word(expected.word())
+                .build());
+        assertEquals(expected, result);
     }
 
     /**
