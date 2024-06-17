@@ -9,6 +9,7 @@ import org.kraaknet.anva.analyzer.controller.model.WordFrequencyRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -106,26 +107,31 @@ class AnvaAnalyzerApplicationTests {
                 frequency("ipsum", 6)
         );
 
-//        final List<WordFrequency> result = service.calculateMostFrequentNWords(loremIpsumText, 10);
-//        assertEquals(expectedValues, result);
+        final ResponseEntity<List<WordFrequency>> response = callCalculateMostFrequentNWords(TEST_TEXT, 10);
+        assertTrue(response.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(200)));
+        assertEquals(expectedValues, response.getBody());
     }
 
     @Test
     void calculateMostFrequentNWordsShorterWordListTest() {
         final List<WordFrequency> expectedValues = List.of(
                 frequency("foo", 3),
-                frequency("bar", 1)
+                frequency("bar", 1),
+                frequency("boo", 1),
+                frequency("fa", 1)
         );
 
-//        final List<WordFrequency> result = service.calculateMostFrequentNWords("foo bar foo, foo $^&@", 10);
-//        assertEquals(expectedValues, result);
+        final ResponseEntity<List<WordFrequency>> response = callCalculateMostFrequentNWords("boo fa foo bar foo, foo $^&@", 10);
+        assertTrue(response.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(200)));
+        assertEquals(expectedValues, response.getBody());
     }
 
     @Test
     void calculateMostFrequentNWordsNoWordListTest() {
         final List<WordFrequency> expectedValues = List.of();
-//        final List<WordFrequency> result = service.calculateMostFrequentNWords("", 10);
-//        assertEquals(expectedValues, result);
+        final ResponseEntity<List<WordFrequency>> response = callCalculateMostFrequentNWords("", 10);
+        assertTrue(response.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(200)));
+        assertEquals(expectedValues, response.getBody());
     }
 
     private ResponseEntity<FrequencyResponse> callHighestFrequency(final String text) {
@@ -139,6 +145,14 @@ class AnvaAnalyzerApplicationTests {
         final var request = new HttpEntity<WordFrequencyRequestRecord>(new WordFrequencyRequestRecord(text, word), HTTP_HEADERS);
         return testRestTemplate.exchange("/word-frequency", POST, request, WordFrequency.class);
     }
+
+    private ResponseEntity<List<WordFrequency>> callCalculateMostFrequentNWords(final String text, final int limit) {
+        record TopWordFrequencyRequestRecord(String text, int limit) {}
+        final ParameterizedTypeReference<List<WordFrequency>> typeReference = new ParameterizedTypeReference<>() {};
+        final var request = new HttpEntity<TopWordFrequencyRequestRecord>(new TopWordFrequencyRequestRecord(text, limit), HTTP_HEADERS);
+        return testRestTemplate.exchange("/frequent-words", POST, request, typeReference);
+    }
+
 
 
 }

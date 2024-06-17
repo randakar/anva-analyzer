@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kraaknet.anva.analyzer.controller.model.FrequencyResponse;
 import org.kraaknet.anva.analyzer.controller.model.TextRequest;
+import org.kraaknet.anva.analyzer.controller.model.TopWordFrequencyRequest;
 import org.kraaknet.anva.analyzer.controller.model.WordFrequency;
 import org.kraaknet.anva.analyzer.controller.model.WordFrequencyRecord;
 import org.kraaknet.anva.analyzer.controller.model.WordFrequencyRequest;
@@ -34,7 +35,7 @@ class WordFrequencyAnalyzerControllerTest {
 
 
     /**
-     *  Just verify this passes things through to the service layer.
+     * Just verify this passes things through to the service layer.
      */
     @Test
     void calculateHighestFrequencyTest() {
@@ -45,7 +46,7 @@ class WordFrequencyAnalyzerControllerTest {
     }
 
     /**
-     *  Just verify this passes things through to the service layer.
+     * Just verify this passes things through to the service layer.
      */
     @Test
     void calculateFrequencyForWordTest() {
@@ -62,7 +63,7 @@ class WordFrequencyAnalyzerControllerTest {
     }
 
     /**
-     *  Just verify this passes things through to the service layer.
+     * Just verify this passes things through to the service layer.
      */
     @Test
     void calculateMostFrequentNWordsTest() {
@@ -72,7 +73,10 @@ class WordFrequencyAnalyzerControllerTest {
         );
 
         when(service.calculateMostFrequentNWords(anyString(), anyInt())).thenReturn(expectedValues);
-        final List<WordFrequency> result = controller.calculateMostFrequentNWords(loremIpsumText, 231);
+        final List<WordFrequency> result = controller.calculateMostFrequentNWords(TopWordFrequencyRequest.builder()
+                .text(loremIpsumText)
+                .limit(545)
+                .build());
         assertEquals(expectedValues, result);
     }
 }

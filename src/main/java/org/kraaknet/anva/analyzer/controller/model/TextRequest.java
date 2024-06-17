@@ -1,4 +1,6 @@
 package org.kraaknet.anva.analyzer.controller.model;
 
-public record TextRequest(String text) {
+import jakarta.validation.constraints.NotNull;
+
+public record TextRequest(@NotNull String text) {
 }
