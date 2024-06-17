@@ -2,10 +2,12 @@ package org.kraaknet.anva.analyzer.service;
 
 import org.kraaknet.anva.analyzer.service.analyzers.WordFrequencyAnalyzer;
 import org.kraaknet.anva.analyzer.service.model.WordFrequency;
+import org.kraaknet.anva.analyzer.service.model.WordFrequencyRecord;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
@@ -34,8 +36,18 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
     }
 
     @Override
-    public List<WordFrequency> calculateMostFrequentNWords(final String text, int n) {
-        return List.of();
+    public List<WordFrequency> calculateMostFrequentNWords(final String text, final int n) {
+        final Map<String, Long> frequencyMap = frequencyMapFor(text);
+        return frequencyMap.entrySet().stream()
+                // Alternatively, instantiate Comparator for this
+                .sorted((a, b) -> Math.toIntExact(b.getValue() - a.getValue()))
+                .limit(n)
+                .map(entry -> WordFrequencyRecord.builder()
+                        .word(entry.getKey())
+                        .frequency(Math.toIntExact(entry.getValue()))
+                        .build())
+                .map(WordFrequency.class::cast)
+                .toList();
     }
 
     private static Map<String, Long> frequencyMapFor(final String text) {
@@ -58,7 +70,7 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
 
     private static Optional<String> maxWordIn(final Map<String, Long> frequencyMap) {
         return frequencyMap.isEmpty() ? Optional.empty() :
-                Optional.of(Collections.max(frequencyMap.entrySet(), Map.Entry.comparingByValue()).getKey());
+                Optional.of(Collections.max(frequencyMap.entrySet(), Entry.comparingByValue()).getKey());
     }
 
 }
