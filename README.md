@@ -7,7 +7,7 @@ _Building_
 
 _Running_
 1. `mvn package -T 1C`
-2`java -jar target/anva-analyzer-*.jar`
+2. `java -jar target/anva-analyzer-*.jar`
 
 _Releasing_
 1. build and test the main branch as per 'Building'
