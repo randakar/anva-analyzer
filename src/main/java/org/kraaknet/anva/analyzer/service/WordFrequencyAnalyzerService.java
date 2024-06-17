@@ -22,12 +22,15 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
     @Override
     public int calculateHighestFrequency(final String text) {
         final Map<String, Long> frequencyMap = frequencyMapFor(text);
-        return maxWordFrequencyIn(frequencyMap).intValue();
+        return Math.toIntExact(maxWordFrequencyIn(frequencyMap));
     }
 
     @Override
     public int calculateFrequencyForWord(final String text, final String word) {
-        return 0;
+        final long result = wordStreamOf(text)
+                .filter(word::equalsIgnoreCase) // we could also implement a custom regular expression instead
+                .count();
+        return Math.toIntExact(result); // prevent integer overflows
     }
 
     @Override
@@ -44,7 +47,7 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
         final var matcher = WORD_PATTERN.matcher(text);
         return matcher.results()
                 .map(MatchResult::group)
-                .map(String::toLowerCase);
+                .map(String::toLowerCase); // make this case-insensitive
     }
 
     private Long maxWordFrequencyIn(final Map<String, Long> frequencyMap) {
