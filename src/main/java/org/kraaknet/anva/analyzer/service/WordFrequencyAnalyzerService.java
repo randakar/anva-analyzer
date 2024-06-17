@@ -3,6 +3,7 @@ package org.kraaknet.anva.analyzer.service;
 import org.kraaknet.anva.analyzer.service.analyzers.WordFrequencyAnalyzer;
 import org.kraaknet.anva.analyzer.controller.model.WordFrequency;
 import org.kraaknet.anva.analyzer.controller.model.WordFrequencyRecord;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.counting;
 
+@Service
 public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
 
     private static final String WORD_EXPRESSION = "[a-zA-Z]+";
