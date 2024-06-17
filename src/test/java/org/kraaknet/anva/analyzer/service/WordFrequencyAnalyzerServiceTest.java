@@ -2,13 +2,13 @@ package org.kraaknet.anva.analyzer.service;
 
 import org.junit.jupiter.api.Test;
 import org.kraaknet.anva.analyzer.service.model.WordFrequency;
-import org.kraaknet.anva.analyzer.service.model.WordFrequencyRecord;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.kraaknet.anva.analyzer.service.util.FileUtilities.loadTextFromFile;
+import static org.kraaknet.anva.analyzer.util.FileUtils.loadTextFromFile;
+import static org.kraaknet.anva.analyzer.util.WordFrequencyUtils.frequency;
 
 class WordFrequencyAnalyzerServiceTest {
 
@@ -65,7 +65,7 @@ class WordFrequencyAnalyzerServiceTest {
                 frequency("bar", 1)
         );
 
-        final List<WordFrequency> result = service.calculateMostFrequentNWords("foo foo, foo, bar", 10);
+        final List<WordFrequency> result = service.calculateMostFrequentNWords("foo bar foo, foo $^&@", 10);
         assertEquals(expectedValues, result);
     }
 
@@ -76,11 +76,6 @@ class WordFrequencyAnalyzerServiceTest {
         assertEquals(expectedValues, result);
     }
 
-    private static WordFrequency frequency(final String word, final int value) {
-        return WordFrequencyRecord.builder()
-                .word(word)
-                .frequency(value)
-                .build();
-    }
+
 }
 
