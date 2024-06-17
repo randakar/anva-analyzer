@@ -3,7 +3,7 @@ package org.kraaknet.anva.analyzer.controller;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kraaknet.anva.analyzer.service.WordFrequencyAnalyzerService;
-import org.kraaknet.anva.analyzer.service.model.WordFrequency;
+import org.kraaknet.anva.analyzer.controller.model.WordFrequency;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;

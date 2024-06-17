@@ -1,6 +1,6 @@
 package org.kraaknet.anva.analyzer.service.analyzers;
 
-import org.kraaknet.anva.analyzer.service.model.WordFrequency;
+import org.kraaknet.anva.analyzer.controller.model.WordFrequency;
 
 import java.util.List;
 

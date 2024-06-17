@@ -1,4 +1,4 @@
-package org.kraaknet.anva.analyzer.service.model;
+package org.kraaknet.anva.analyzer.controller.model;
 
 public interface WordFrequency {
 

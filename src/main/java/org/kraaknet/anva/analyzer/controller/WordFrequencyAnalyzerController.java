@@ -3,7 +3,7 @@ package org.kraaknet.anva.analyzer.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kraaknet.anva.analyzer.service.WordFrequencyAnalyzerService;
-import org.kraaknet.anva.analyzer.service.model.WordFrequency;
+import org.kraaknet.anva.analyzer.controller.model.WordFrequency;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,7 +1,7 @@
 package org.kraaknet.anva.analyzer.service;
 
 import org.junit.jupiter.api.Test;
-import org.kraaknet.anva.analyzer.service.model.WordFrequency;
+import org.kraaknet.anva.analyzer.controller.model.WordFrequency;
 
 import java.util.List;
 import java.util.Map;
