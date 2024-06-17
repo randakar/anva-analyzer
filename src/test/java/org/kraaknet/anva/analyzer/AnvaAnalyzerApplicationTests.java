@@ -42,6 +42,7 @@ class AnvaAnalyzerApplicationTests {
     private final String TEST_TEXT = loadTextFromFile("lorem-ipsum.txt");
 
     @Autowired
+    @SuppressWarnings("unused")
     private TestRestTemplate testRestTemplate;
 
     @Test
