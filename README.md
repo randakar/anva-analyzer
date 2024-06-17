@@ -11,8 +11,8 @@ _Running_
 
 _Releasing_
 1. build and test the main branch as per 'Building'
-2. git tag -a X.Y.Z 
-3. git push --follow-tags
+2. `git tag -a X.Y.Z` 
+3. `git push --follow-tags`
 g
 (See: https://jgitver.github.io/ for how the above works)
 
