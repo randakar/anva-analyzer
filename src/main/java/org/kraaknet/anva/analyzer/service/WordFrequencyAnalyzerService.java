@@ -6,9 +6,11 @@ import org.kraaknet.anva.analyzer.service.model.WordFrequency;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.counting;
 
@@ -19,16 +21,8 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
 
     @Override
     public int calculateHighestFrequency(final String text) {
-        final var matcher = WORD_PATTERN.matcher(text);
-        final Map<String, Long> frequencyMap = matcher.results()
-                .map(MatchResult::group)
-                .collect(Collectors.groupingByConcurrent(word -> word, counting()));
-        return frequencyMap.isEmpty() ? 0 : extractMaxFrequency(frequencyMap).intValue();
-    }
-
-    private Long extractMaxFrequency(final Map<String, Long> frequencyMap) {
-        final String maxWord = Collections.max(frequencyMap.entrySet(), Map.Entry.comparingByValue()).getKey();
-        return frequencyMap.getOrDefault(maxWord, 0L);
+        final Map<String, Long> frequencyMap = frequencyMapFor(text);
+        return maxWordFrequencyIn(frequencyMap).intValue();
     }
 
     @Override
@@ -40,4 +34,28 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
     public List<WordFrequency> calculateMostFrequentNWords(final String text, int n) {
         return List.of();
     }
+
+    private static Map<String, Long> frequencyMapFor(final String text) {
+        return wordStreamOf(text)
+                .collect(Collectors.groupingByConcurrent(word -> word, counting()));
+    }
+
+    private static Stream<String> wordStreamOf(final String text) {
+        final var matcher = WORD_PATTERN.matcher(text);
+        return matcher.results()
+                .map(MatchResult::group)
+                .map(String::toLowerCase);
+    }
+
+    private Long maxWordFrequencyIn(final Map<String, Long> frequencyMap) {
+        return maxWordIn(frequencyMap)
+                .map(maxWord -> frequencyMap.getOrDefault(maxWord, 0L))
+                .orElse(0L);
+    }
+
+    private static Optional<String> maxWordIn(final Map<String, Long> frequencyMap) {
+        return frequencyMap.isEmpty() ? Optional.empty() :
+                Optional.of(Collections.max(frequencyMap.entrySet(), Map.Entry.comparingByValue()).getKey());
+    }
+
 }

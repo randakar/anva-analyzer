@@ -13,7 +13,7 @@ class WordFrequencyAnalyzerServiceTest {
     @Test
     void calculateHighestFrequencyTest() {
         final int result = service.calculateHighestFrequency(loremIpsumText);
-        assertEquals(10, result); // The word "ac" in the lorem ipsum text occurs 10 times.
+        assertEquals(13, result); // The word "ut" in the lorem ipsum text occurs 13 times, in different casing
     }
 
     @Test
