@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -64,7 +65,7 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
     }
 
     private static Stream<String> wordStreamOf(final String text) {
-        final var matcher = WORD_PATTERN.matcher(text);
+        final Matcher matcher = WORD_PATTERN.matcher(text);
         return matcher.results()
                 .map(MatchResult::group)
                 .map(String::toLowerCase); // make this case-insensitive

@@ -54,7 +54,7 @@ class AnvaAnalyzerApplicationTests {
     @Test
     void notExistingEndpointTest() {
         final var entity = new HttpEntity<>(HTTP_HEADERS);
-        final var response = testRestTemplate
+        final ResponseEntity<Void> response = testRestTemplate
                 .exchange("/no-such-endpoint", GET, entity, Void.class);
         assertNotNull(response);
         assertTrue(response.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(404)));
@@ -62,14 +62,14 @@ class AnvaAnalyzerApplicationTests {
 
     @Test
     void highestFrequencyEndpointTest() {
-        final var response = callHighestFrequency(TEST_TEXT);
+        final ResponseEntity<FrequencyResponse> response = callHighestFrequency(TEST_TEXT);
         assertTrue(response.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(200)));
         assertEquals(FrequencyResponse.of(13), response.getBody());
     }
 
     @Test
     void highestFrequencyEndpointEmptyTextTest() {
-        final var response = callHighestFrequency("");
+        final ResponseEntity<FrequencyResponse> response = callHighestFrequency("");
         assertTrue(response.getStatusCode().isSameCodeAs(HttpStatusCode.valueOf(200)));
         assertEquals(FrequencyResponse.of(0), response.getBody());
     }
@@ -82,7 +82,7 @@ class AnvaAnalyzerApplicationTests {
                 "califragilisticexpialidocious", 0 // not found test
         );
         testCases.forEach(((word, count) -> {
-            final var expected = WordFrequencyRecord.builder()
+            final WordFrequencyRecord expected = WordFrequencyRecord.builder()
                     .word(word)
                     .frequency(count)
                     .build();
