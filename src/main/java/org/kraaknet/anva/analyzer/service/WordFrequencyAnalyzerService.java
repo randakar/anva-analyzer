@@ -49,10 +49,7 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
         return frequencyMap.entrySet().stream()
                 .sorted(compareByFrequencyThenAlphabetically)
                 .limit(n)
-                .map(entry -> WordFrequencyRecord.builder()
-                        .word(entry.getKey())
-                        .frequency(entry.getValue())
-                        .build())
+                .map(entry -> new WordFrequencyRecord(entry.getKey(), entry.getValue()))
                 .map(WordFrequency.class::cast)
                 .toList();
     }
