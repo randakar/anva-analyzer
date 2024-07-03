@@ -42,13 +42,12 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
     public List<WordFrequency> calculateMostFrequentNWords(final String text, final int n) {
         final Map<String, Integer> frequencyMap = frequencyMapFor(text);
         // Highest number of occurrences first,
-        final Comparator<Entry<String, Integer>> compareByFrequency = (a, b) -> b.getValue() - a.getValue();
+        final Comparator<Entry<String, Integer>> compareByFrequency = Entry.comparingByValue();
         // and then alphabetically by word (stored in the key).
-        final Comparator<Entry<String, Integer>> compareByFrequencyThenNaturally = compareByFrequency
+        final Comparator<Entry<String, Integer>> compareByFrequencyThenAlphabetically = compareByFrequency
                 .thenComparing(Entry.comparingByKey());
         return frequencyMap.entrySet().stream()
-                // Alternatively, instantiate Comparator for this
-                .sorted(compareByFrequencyThenNaturally)
+                .sorted(compareByFrequencyThenAlphabetically)
                 .limit(n)
                 .map(entry -> WordFrequencyRecord.builder()
                         .word(entry.getKey())
