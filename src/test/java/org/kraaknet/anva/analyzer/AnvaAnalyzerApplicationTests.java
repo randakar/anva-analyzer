@@ -100,12 +100,12 @@ class AnvaAnalyzerApplicationTests {
                 frequency("ac", 10),
                 frequency("id", 8),
                 frequency("malesuada", 8),
-                frequency("in", 7),
-                frequency("tincidunt", 7),
                 frequency("aliquam", 7),
                 frequency("felis", 7),
-                frequency("urna", 6),
-                frequency("ipsum", 6)
+                frequency("in", 7),
+                frequency("tincidunt", 7),
+                frequency("a", 6),
+                frequency("et", 6)
         );
 
         final ResponseEntity<List<WordFrequency>> response = callCalculateMostFrequentNWords(TEST_TEXT, 10);

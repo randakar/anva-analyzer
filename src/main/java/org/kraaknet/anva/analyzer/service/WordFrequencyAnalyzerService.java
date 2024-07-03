@@ -6,6 +6,7 @@ import org.kraaknet.anva.analyzer.service.analyzers.WordFrequencyAnalyzer;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,9 +41,14 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
     @Override
     public List<WordFrequency> calculateMostFrequentNWords(final String text, final int n) {
         final Map<String, Integer> frequencyMap = frequencyMapFor(text);
+        // Highest number of occurrences first,
+        final Comparator<Entry<String, Integer>> compareByFrequency = (a, b) -> b.getValue() - a.getValue();
+        // and then alphabetically by word (stored in the key).
+        final Comparator<Entry<String, Integer>> compareByFrequencyThenNaturally = compareByFrequency
+                .thenComparing(Entry.comparingByKey());
         return frequencyMap.entrySet().stream()
                 // Alternatively, instantiate Comparator for this
-                .sorted((a, b) -> b.getValue() - a.getValue())
+                .sorted(compareByFrequencyThenNaturally)
                 .limit(n)
                 .map(entry -> WordFrequencyRecord.builder()
                         .word(entry.getKey())
