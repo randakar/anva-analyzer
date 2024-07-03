@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -71,15 +70,8 @@ public class WordFrequencyAnalyzerService implements WordFrequencyAnalyzer {
                 .map(String::toLowerCase); // make this case-insensitive
     }
 
-    private Integer maxWordFrequencyIn(final Map<String, Integer> frequencyMap) {
-        return maxWordIn(frequencyMap)
-                .map(maxWord -> frequencyMap.getOrDefault(maxWord, 0))
-                .orElse(0);
-    }
-
-    private static Optional<String> maxWordIn(final Map<String, Integer> frequencyMap) {
-        return frequencyMap.isEmpty() ? Optional.empty() :
-                Optional.of(Collections.max(frequencyMap.entrySet(), Entry.comparingByValue()).getKey());
+    private int maxWordFrequencyIn(final Map<String, Integer> frequencyMap) {
+        return frequencyMap.isEmpty() ? 0 : Collections.max(frequencyMap.values(), Integer::compareTo);
     }
 
 }
